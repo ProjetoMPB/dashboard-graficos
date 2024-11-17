@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 # import pandas as pd
 import carrega_dados
 import math
+import os
 
 ############################
 ## INICIALIZA O DASHBOARD ##
@@ -159,4 +160,7 @@ app.layout = html.Div([
 ######################
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(host="0.0.0.0", port=int(os.environ.get("PORT", 8050)))
+
+# if __name__ == "__main__":
+    # app.run_server(debug=True)
