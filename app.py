@@ -12,7 +12,8 @@ import os
 ## INICIALIZA O DASHBOARD ##
 ############################
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__) # Criação do aplicativo Dash
+server = app.server  # Referência ao servidor Flask interno
 
 ######################
 ## CARREGA OS DADOS ##
