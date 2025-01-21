@@ -27,91 +27,49 @@ def carrega_c_letras():
 
     return saida
 
+
 def carrega_r_letras():
-    r_letras=[]
-    with open('r_letras_corpora.txt', 'r') as file:
-        for linha in file:
-            r_letras.append(linha)
+    df = pd.read_csv(r'resultados\2M3d.csv', index_col=0).T
+    df = df.fillna(0).sort_index()
+    df *= 100
+    corpora = df.columns.values.tolist()
 
-    # normalização
-    x=r_letras
-    r_letras1=[]
-
-    # Remover as aspas externas de cada elemento
-    x = [item.strip("'") for item in x]
-
-    # Converter cada elemento em uma lista usando eval()
-    x = [eval(item) for item in x]
-
-    # Imprimir nova lista
-    for item in x:
-        r_letras1.extend(item)
-
-    r_letras1_dict = {r_letras1[k]:r_letras1[k + 1] for k in range(0, len(r_letras1) - 1, 2)}
-
-    r_letras_pct_dict = {}
-
-    for corpus in r_letras1_dict.keys():
-        # estabelecendo o vetor de r-letras zerado (26 posições)
-        r_vetor=26*[0]
-        for i in r_letras1_dict[corpus]:
-            a=ord(i)-97
-            r_vetor[a] = r_vetor[a]+1
-
-        # atribuindo percentagens
-        perc=[]
-        tot=sum(r_vetor)
-        tx=100/tot
-
-        for i in r_vetor:
-            a=i*tx
-            perc.append(a)
-
-        r_letras_pct_dict[corpus] = perc
-
-    r_letras_pct_df = pd.DataFrame(r_letras_pct_dict, index = ['a', 'b', 'c', 'd', 'e',
-                                                               'f', 'g', 'h', 'i', 'j',
-                                                               'k', 'l', 'm', 'n', 'o',
-                                                               'p', 'q', 'r', 's', 't',
-                                                               'u', 'v', 'w', 'x', 'y',
-                                                               'z'])
-
-    saida = {'df': r_letras_pct_df}
-
-    ## PREPARA A SAÍDA ##
-
-    saida['x'] = pd.DataFrame({corpus:r_letras_pct_df.index.values.tolist() for corpus in r_letras_pct_dict.keys()})
-
-    saida['hover_data'] = {corpus: {'a': 'Pontos de ataque: □□□ □□□ □□□ □□□',
-                                    'b': 'Pontos de ataque: ■□□ □□□ □□□ □□□',
-                                    'c': 'Pontos de ataque: □□□ ■□□ □□□ □□□',
-                                    'd': 'Pontos de ataque: □□□ □■□ □□□ □□□',
-                                    'e': 'Pontos de ataque: □□□ □□□ ■□□ □□□',
-                                    'f': 'Pontos de ataque: □□□ □□□ □□■ □□□',
-                                    'g': 'Pontos de ataque: □□□ □□□ □□□ ■□□',
-                                    'h': 'Pontos de ataque: ■□□ ■□□ □□□ □□□',
-                                    'i': 'Pontos de ataque: ■□□ □■□ □□□ □□□',
-                                    'j': 'Pontos de ataque: ■□□ □□□ ■□□ □□□',
-                                    'k': 'Pontos de ataque: ■□□ □□□ □□■ □□□',
-                                    'l': 'Pontos de ataque: ■□□ □□□ □□□ ■□□',
-                                    'm': 'Pontos de ataque: □□□ ■□□ ■□□ □□□',
-                                    'n': 'Pontos de ataque: □□□ ■□□ □□□ ■□□',
-                                    'o': 'Pontos de ataque: □□□ □■□ □□■ □□□',
-                                    'p': 'Pontos de ataque: □□□ □□□ ■□□ ■□□',
-                                    'q': 'Pontos de ataque: ■□□ ■□□ ■□□ □□□',
-                                    'r': 'Pontos de ataque: ■□□ ■□□ □□□ ■□□',
-                                    's': 'Pontos de ataque: ■□□ □■□ □□■ □□□',
-                                    't': 'Pontos de ataque: ■□□ □□□ ■□□ ■□□',
-                                    'u': 'Pontos de ataque: □□□ ■□□ ■□□ ■□□',
-                                    'v': 'Pontos de ataque: ■□□ ■□□ ■□□ ■□□',
-                                    'w': 'Pontos de ataque: ■□□ □□□ ■□■ □■□',
-                                    'x': 'Pontos de ataque: ■□□ ■□□ ■□■ □■□',
-                                    'y': 'Pontos de ataque: □□■ □■□ ■□■ □■□',
-                                    'z': 'Pontos de ataque: ■□■ □■□ □■□ □■□'} for corpus in r_letras_pct_dict.keys()}
-
-    saida['graficos_por_linha'] = 2
-
-    saida['titulo_do_grafico'] = 'Porcentagem de ocorrência das r-letras em cada corpus selecionado'
+    saida = {
+        'df': df,
+        'x': pd.DataFrame({corpus: sorted(df.index.values.tolist()) for corpus in corpora}),
+        'hover_data': {
+             corpus: {
+                 'a': 'Pontos de ataque: □□□ □□□ □□□ □□□',
+                 'b': 'Pontos de ataque: ■□□ □□□ □□□ □□□',
+                 'c': 'Pontos de ataque: □□□ ■□□ □□□ □□□',
+                 'd': 'Pontos de ataque: □□□ □■□ □□□ □□□',
+                 'e': 'Pontos de ataque: □□□ □□□ ■□□ □□□',
+                 'f': 'Pontos de ataque: □□□ □□□ □□■ □□□',
+                 'g': 'Pontos de ataque: □□□ □□□ □□□ ■□□',
+                 'h': 'Pontos de ataque: ■□□ ■□□ □□□ □□□',
+                 'i': 'Pontos de ataque: ■□□ □■□ □□□ □□□',
+                 'j': 'Pontos de ataque: ■□□ □□□ ■□□ □□□',
+                 'k': 'Pontos de ataque: ■□□ □□□ □□■ □□□',
+                 'l': 'Pontos de ataque: ■□□ □□□ □□□ ■□□',
+                 'm': 'Pontos de ataque: □□□ ■□□ ■□□ □□□',
+                 'n': 'Pontos de ataque: □□□ ■□□ □□□ ■□□',
+                 'o': 'Pontos de ataque: □□□ □■□ □□■ □□□',
+                 'p': 'Pontos de ataque: □□□ □□□ ■□□ ■□□',
+                 'q': 'Pontos de ataque: ■□□ ■□□ ■□□ □□□',
+                 'r': 'Pontos de ataque: ■□□ ■□□ □□□ ■□□',
+                 's': 'Pontos de ataque: ■□□ □■□ □□■ □□□',
+                 't': 'Pontos de ataque: ■□□ □□□ ■□□ ■□□',
+                 'u': 'Pontos de ataque: □□□ ■□□ ■□□ ■□□',
+                 'v': 'Pontos de ataque: ■□□ ■□□ ■□□ ■□□',
+                 'w': 'Pontos de ataque: ■□□ □□□ ■□■ □■□',
+                 'x': 'Pontos de ataque: ■□□ ■□□ ■□■ □■□',
+                 'y': 'Pontos de ataque: □□■ □■□ ■□■ □■□',
+                 'z': 'Pontos de ataque: ■□■ □■□ □■□ □■□'
+             } for corpus in corpora
+         },
+        'graficos_por_linha': 2,
+        'titulo_do_grafico': 'Porcentagem de ocorrência das r-letras em cada corpus selecionado'
+    }
 
     return saida
 
