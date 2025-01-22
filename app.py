@@ -27,8 +27,14 @@ dfs['c'] = carrega_dados.carrega_c_letras()
 ## r-letras
 dfs['r'] = carrega_dados.carrega_r_letras()
 
-# genera de tipos acordais, tipos acordais e acordes específicos
-dfs['genera'], dfs['tas'], dfs['ac_espec'] = carrega_dados.carrega_genera_tas_acordes()
+## genera de tipos acordais
+dfs['genera'] = carrega_dados.carrega_genera()
+
+## tipos acordais
+dfs['tas'] = carrega_dados.carrega_tipos_acordais()
+
+## acordes especificos
+dfs['ac_espec'] = carrega_dados.carrega_acordes_especificos()
 
 #########################
 ## DICIONARIO DE CORES ##
