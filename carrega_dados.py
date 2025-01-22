@@ -5,11 +5,11 @@ from collections import Counter
 def carrega_c_letras():
     df = pd.read_csv(r'resultados\2M2b.csv', index_col=0)
     df *= 100
-    corpora = df.columns.values.tolist()
+    corpora = df.index.tolist()
 
     saida = {
         'df': df,
-        'x': pd.DataFrame({corpus: ['u', 'P', 'p', 'A', 'a', 'S', 's'] for corpus in corpora}),
+        'x': {corpus: ['u', 'P', 'p', 'A', 'a', 'S', 's'] for corpus in corpora},
         'hover_data': {
             corpus: {
                 'u': 'Movimento: Uníssono',
@@ -29,14 +29,14 @@ def carrega_c_letras():
 
 
 def carrega_r_letras():
-    df = pd.read_csv(r'resultados\2M3d.csv', index_col=0).T
+    df = pd.read_csv(r'resultados\2M3d.csv', index_col=0)
     df = df.fillna(0).sort_index()
     df *= 100
-    corpora = df.columns.values.tolist()
+    corpora = df.index.tolist()
 
     saida = {
         'df': df,
-        'x': pd.DataFrame({corpus: sorted(df.index.values.tolist()) for corpus in corpora}),
+        'x': {corpus: list("abcdefghijklmnopqrstuvwxyz") for corpus in corpora},
         'hover_data': {
              corpus: {
                  'a': 'Pontos de ataque: □□□ □□□ □□□ □□□',

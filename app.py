@@ -36,8 +36,8 @@ dfs['genera'], dfs['tas'], dfs['ac_espec'] = carrega_dados.carrega_genera_tas_ac
 
 dict_cores = {}
 
-for corpus in dfs['c']['df'].columns.values.tolist():
-    if corpus in ['JAZZ', 'CHORO', 'SAMBA']:
+for corpus in dfs['c']['df'].index.tolist():
+    if corpus in ['Jazz', 'Choro', 'Samba']:
         dict_cores[corpus] = 'lightsalmon'
     elif corpus == 'MPB':
         dict_cores[corpus] = 'purple'
@@ -83,7 +83,7 @@ def update_dynamic_charts(selected_graph, selected_corpora, n_clicks):
         row = (i // num_cols) + 1
         col = (i % num_cols) + 1
         fig_dynamic.add_trace(
-            go.Bar(x=x[value], y=df[value],
+            go.Bar(x=x[value], y=df.loc[value],
                    name = '',
                    marker_color=dict_cores[value],
                    showlegend=False,
@@ -126,7 +126,7 @@ app.layout = html.Div([
 
         dcc.Dropdown(
             id="dropdown-corpora",
-            options=sorted(dfs['c']['df'].columns.values.tolist()),
+            options=sorted(dfs['c']['df'].index.tolist()),
             value=[],
             multi=True,
             placeholder="Selecione"
