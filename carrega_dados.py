@@ -1,10 +1,11 @@
 import json
+from pathlib import Path
 
 import pandas as pd
 
 
 def carrega_c_letras():
-    df = pd.read_csv(r'resultados\2M2b.csv', index_col=0)
+    df = pd.read_csv(Path("resultados", '2M2b.csv'), index_col=0)
     df *= 100
     corpora = df.index.tolist()
 
@@ -30,7 +31,7 @@ def carrega_c_letras():
 
 
 def carrega_r_letras():
-    df = pd.read_csv(r'resultados\2M3d.csv', index_col=0)
+    df = pd.read_csv(Path("resultados", '2M3d.csv'), index_col=0)
     df = df.fillna(0).sort_index()
     df *= 100
     corpora = df.index.tolist()
@@ -76,7 +77,7 @@ def carrega_r_letras():
 
 
 def carrega_genera():
-    df = pd.read_csv(r'resultados\2H2b.csv', index_col=0)
+    df = pd.read_csv(Path("resultados", '2H2b.csv'), index_col=0)
     df *= 100
     corpora = df.index.tolist()
 
@@ -105,7 +106,7 @@ def carrega_genera():
 
 
 def carrega_tipos_acordais():
-    df = pd.read_csv(r'resultados\2HD1.csv', index_col=0)
+    df = pd.read_csv(Path("resultados", '2HD1.csv'), index_col=0)
     df *= 100
 
     with open("lexico-tipos-acordais.json", "r", encoding="utf-8") as f:
@@ -128,7 +129,7 @@ def carrega_tipos_acordais():
 
 
 def carrega_acordes_especificos():
-    df = pd.read_csv(r'resultados\2HD2.csv', index_col=0)
+    df = pd.read_csv(Path("resultados", '2HD2.csv'), index_col=0)
     df *= 100
 
     with open("lexico-tipos-acordais.json", "r") as f:
